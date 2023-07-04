@@ -825,8 +825,8 @@ class _PinCodeTextFieldState extends State<PinCodeTextField>
         // adding the extra space at the bottom to show the error text from validator
         height: (widget.autovalidateMode == AutovalidateMode.disabled &&
                 widget.validator == null)
-            ? widget.pinTheme.fieldHeight
-            : widget.pinTheme.fieldHeight + widget.errorTextSpace,
+            ? widget.pinTheme.fieldHeight * 2 + 34
+            : widget.pinTheme.fieldHeight * 2 + 34 + widget.errorTextSpace,
         color: widget.backgroundColor,
         child: Stack(
           alignment: Alignment.bottomCenter,
@@ -864,9 +864,18 @@ class _PinCodeTextFieldState extends State<PinCodeTextField>
                         }
                       }
                     : null,
-                child: Row(
-                  mainAxisAlignment: widget.mainAxisAlignment,
-                  children: _generateFields(),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: widget.mainAxisAlignment,
+                      children: _generateFields(0, 4),
+                    ),
+                    const SizedBox(height: 34),
+                    Row(
+                      mainAxisAlignment: widget.mainAxisAlignment,
+                      children: _generateFields(4, 8),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -876,9 +885,9 @@ class _PinCodeTextFieldState extends State<PinCodeTextField>
     );
   }
 
-  List<Widget> _generateFields() {
+  List<Widget> _generateFields(int start, int end) {
     var result = <Widget>[];
-    for (int i = 0; i < widget.length; i++) {
+    for (int i = start; i < end; i++) {
       result.add(
         Container(
             padding: _pinTheme.fieldOuterPadding,
